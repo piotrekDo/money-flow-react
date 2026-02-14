@@ -16,7 +16,7 @@ export const TopRightSide = ({ tran }: Props) => {
           <MoreHorizontal size={25} color='#A6A8AE' />
         </Flex>
         <Flex justify={'center'} align={'center'} w={'100%'} h={'100%'} >
-          <Text fontSize={'2xl'} fontWeight={'500'} color={'#cc5555'}>{tran.amount} zł</Text>
+          <Text fontSize={'2xl'} fontWeight={'500'} color={tran.amount > 0 ? '#2D8C60' : '#cc5555'}>{tran.amount} zł</Text>
         </Flex>
       </VStack>
     </VStack>

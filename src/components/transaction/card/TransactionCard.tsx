@@ -11,7 +11,7 @@ interface Props {
 
 export const TransactionCard = ({ tran }: Props) => {
     const height = 200;
-    const width = height * 2.5;
+    const width = height * 3;
 
     return (
         <VStack h={height} w={width} gap={0} bgColor={'#FEFCFC'} padding={2} borderRadius={10}>
@@ -20,7 +20,7 @@ export const TransactionCard = ({ tran }: Props) => {
                 <TopRightSide tran={tran} />
             </HStack>
             <Flex bgColor={'blackAlpha.200'} w={'100%'} height={'1px'} />
-            <CardBottom />
+            <CardBottom tran={tran}/>
         </VStack>
     )
 }

@@ -12,23 +12,28 @@ interface Props {
 
 export const HeaderSection = ({ tran }: Props) => {
     return (
-        <Tooltip positioning={{ placement: 'bottom-start' }} content={tran.merchantDataRaw}>
-            <HStack w={'100%'} mb={2}>
-                <img
-                    src={`/merchant_icons/${tran.knownMerchant?.merchantCode || 'UNKNOWN'}.png`}
-                    onError={(e) => {
-                        e.currentTarget.onerror = null; // zapobiega pętli, jeśli GENERIC też nie istnieje
-                        e.currentTarget.src = '/merchant_icons/GENERIC.png';
-                    }}
-                    style={{
-                        height: '30px',
-                        objectFit: 'contain',
-                        borderRadius: '50px',
-                    }}
-                    referrerPolicy='no-referrer'
-                />
-                <Text lineClamp={1} maxW={'250px'} alignSelf={'flex-start'} fontSize={''} fontWeight={'600'} color={tran.knownMerchant ? 'blackAlpha.800' : 'orange.400'}>{tran.knownMerchant?.merchantName || tran.merchantDataRaw}</Text>
-            </HStack>
-        </Tooltip>
+        <HStack w={'100%'} justify={'space-between'} alignItems={'start'} >
+            <Tooltip positioning={{ placement: 'bottom-start' }} content={tran.merchantDataRaw}>
+                <HStack w={'80%'} mb={2}>
+                    <img
+                        src={`/merchant_icons/${tran.knownMerchant?.merchantCode || 'UNKNOWN'}.png`}
+                        onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/merchant_icons/GENERIC.png';
+                        }}
+                        style={{
+                            height: '30px',
+                            objectFit: 'contain',
+                            borderRadius: '50px',
+                        }}
+                        referrerPolicy='no-referrer'
+                    />
+                    <Text  lineClamp={1} maxW={'250px'} alignSelf={'flex-start'} fontSize={''} fontWeight={'600'} color={tran.knownMerchant ? 'blackAlpha.800' : 'orange.400'}>{tran.knownMerchant?.merchantName || tran.merchantDataRaw}</Text>
+                </HStack>
+            </Tooltip>
+            <Flex align={'start'} >
+                <Text color={'blackAlpha.700'}> ID: {tran.systemId}</Text>
+            </Flex>
+        </HStack>
     )
 }
