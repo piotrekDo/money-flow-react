@@ -11,3 +11,10 @@ export interface KnownMerchant {
     imageUrl: string,
     keywords: KnownMerchantKeyWord[]
 }
+
+export interface PossibleMerchant {
+    id: number;
+    knownMerchantDto: KnownMerchant,
+    points: number;
+    matchedKeywords: string[]
+}
