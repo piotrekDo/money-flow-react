@@ -1,7 +1,19 @@
-// hooks/useTransactionsPageData.ts
-import { useMemo, useState } from 'react'
-import { useTransactions } from '@/hooks/useTransactions'
-import type { Transaction } from '@/model/Transaction'
+import { useTransactions } from '@/hooks/useTransactions';
+import type { Transaction } from '@/model/Transaction';
+import { useMemo, useState } from 'react';
+
+export type TransactionFilter = {
+    name: string;
+    count: number;
+}
+
+export type Totals = {
+    totals: number;
+    totalExpense: number;
+    totalIncome: number;
+    totalCashIn: number;
+    totalCashOut: number;
+}
 
 export const useTransactionsPageData = (initialDate: Date = new Date()) => {
     const [selectedDate, setSelectedDate] = useState<Date>(initialDate)
@@ -28,8 +40,14 @@ export const useTransactionsPageData = (initialDate: Date = new Date()) => {
         formatDate(to)
     )
 
-    const filters = useMemo(() => {
-        if (!data) return []
+    const filters: TransactionFilter[] = useMemo(() => {
+        if (!data) return [
+            { name: 'Wszystkie', count: 0 },
+            { name: 'Nieznane', count: 0 },
+            { name: 'Przychody', count: 0 },
+            { name: 'Wydatki', count: 0 },
+            { name: 'Bankomat', count: 0 },
+        ]
         const counts = {
             Wszystkie: data.allTransactionCount,
             Nieznane: data.unknownMerchantTransactionCount,
@@ -41,7 +59,18 @@ export const useTransactionsPageData = (initialDate: Date = new Date()) => {
         return Object.entries(counts).map(([name, count]) => ({ name, count }))
     }, [data])
 
+    const totals: Totals = useMemo(() => {
+        return {
+            totals: data?.totals || 0,
+            totalExpense: data?.totalExpense || 0,
+            totalIncome: data?.totalIncome || 0,
+            totalCashIn: data?.totalCashIn || 0,
+            totalCashOut: data?.totalCashOut || 0
+        }
+    }, [data]);
+
     const filteredTransactions = useMemo<Transaction[]>(() => {
+        console.log(data)
         if (!data?.transactions) return []
 
         switch (selectedFilter) {
@@ -60,13 +89,6 @@ export const useTransactionsPageData = (initialDate: Date = new Date()) => {
         }
     }, [data?.transactions, selectedFilter])
 
-    const formatDayHeader = (date: Date) =>
-        date.toLocaleDateString('pl-PL', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-        })
 
     return {
         selectedDate,
@@ -74,8 +96,8 @@ export const useTransactionsPageData = (initialDate: Date = new Date()) => {
         selectedFilter,
         setSelectedFilter,
         filters,
+        totals,
         filteredTransactions,
-        formatDayHeader,
         isLoading,
         isFetching,
         isError,

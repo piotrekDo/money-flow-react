@@ -1,9 +1,8 @@
 import type { Transaction } from '@/model/Transaction';
-import { VStack, IconButton, HStack, Stack, Text, Separator, Flex } from '@chakra-ui/react'
-import { MoreHorizontal } from "lucide-react";
-import { TopRightSide } from './TopRightSide';
-import { TopLeftSide } from './TopLeftSide';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { CardBottom } from './CardBottom';
+import { TopLeftSide } from './TopLeftSide';
+import { TopRightSide } from './TopRightSide';
 
 interface Props {
     tran: Transaction
@@ -20,7 +19,7 @@ export const TransactionCard = ({ tran }: Props) => {
                 <TopRightSide tran={tran} />
             </HStack>
             <Flex bgColor={'blackAlpha.200'} w={'100%'} height={'1px'} />
-            <CardBottom tran={tran}/>
+            <CardBottom tran={tran} />
         </VStack>
     )
 }

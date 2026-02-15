@@ -11,6 +11,11 @@ export interface FetchFinancialTransactionsResponseRaw {
     expenseTransactionCount: number;
     cashTransactionCount: number;
     missingDataTransactionCount: number;
+    totals: number;
+    totalExpense: number;
+    totalIncome: number;
+    totalCashIn: number;
+    totalCashOut: number;
 }
 
 export type FetchFinancialTransactionsResponse = Omit<FetchFinancialTransactionsResponseRaw, 'transactions'> & {

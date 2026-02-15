@@ -1,7 +1,10 @@
-import { Flex, HStack, Text, VStack, Spinner } from '@chakra-ui/react'
-import { TransactionCard } from '../transaction/card/TransactionCard'
-import { CalendarNavigation } from '../CalendarNavigation'
 import { useTransactionsPageData } from '@/hooks/useTransactionsPageData'
+import { Flex, HStack, Text, VStack } from '@chakra-ui/react'
+import { CalendarNavigation } from '../CalendarNavigation'
+import { TransactionCardSkeleton } from '../transaction/TransactionCardSkeleton'
+import { FiltersSection } from '../transaction_page/FiltersSection'
+import { TransactionsList } from '../transaction_page/TransactionsList'
+import { TotalsSection } from '../transaction_page/TotalsSection'
 
 export const TransactionsPage = () => {
     const {
@@ -10,8 +13,8 @@ export const TransactionsPage = () => {
         selectedFilter,
         setSelectedFilter,
         filters,
+        totals,
         filteredTransactions,
-        formatDayHeader,
         isLoading,
         isFetching,
         isError,
@@ -26,59 +29,27 @@ export const TransactionsPage = () => {
                 setSelectedDate={setSelectedDate}
             />
 
-            {isBusy && <Spinner size="lg" />}
+            <FiltersSection
+                isBusy={isBusy}
+                totals={totals}
+                filters={filters}
+                selectedFilter={selectedFilter}
+                setSelectedFilter={setSelectedFilter}
+            />
+
+            {isBusy && <>
+                <TransactionCardSkeleton />
+                <TransactionCardSkeleton />
+                <TransactionCardSkeleton />
+                <TransactionCardSkeleton />
+
+            </>}
             {isError && <Text color="red.500">Błąd ładowania danych</Text>}
 
             {!isBusy && !isError && (
                 <>
-                    <HStack color="blackAlpha.800" w="600px" gap={0} borderRadius={10} overflow="hidden">
-                        {filters.map(f => (
-                            <Flex
-                                key={f.name}
-                                gap={2}
-                                w="100%"
-                                justify="center"
-                                align="center"
-                                bg={selectedFilter === f.name ? '#DAE5DC' : '#FEF6EC'}
-                                cursor="pointer"
-                                onClick={() => setSelectedFilter(f.name)}
-                                py={2}
-                                transition="background .2s"
-                                borderRadius={selectedFilter === f.name ? '10px' : 0}
-                            >
-                                <Text>{f.name}</Text>
-                                <Text
-                                    fontWeight="600"
-                                    bgColor={selectedFilter === f.name ? '#C3D8C9' : '#FCE8D2'}
-                                    px={2}
-                                    borderRadius="10px"
-                                >
-                                    {f.count}
-                                </Text>
-                            </Flex>
-                        ))}
-                    </HStack>
-
-                    {filteredTransactions.map((t, index) => {
-                        const currentDate = new Date(t.tranDate).toDateString()
-                        const prevDate =
-                            index > 0
-                                ? new Date(filteredTransactions[index - 1].tranDate).toDateString()
-                                : null
-
-                        const showHeader = currentDate !== prevDate
-
-                        return (
-                            <div key={t.systemId}>
-                                {showHeader && (
-                                    <Text alignSelf="flex-start" color="blackAlpha.800" fontWeight="700" fontSize="md" mb={2}>
-                                        {formatDayHeader(new Date(t.tranDate))}
-                                    </Text>
-                                )}
-                                <TransactionCard tran={t} />
-                            </div>
-                        )
-                    })}
+                    <TotalsSection totals={totals}/>
+                    <TransactionsList filteredTransactions={filteredTransactions} />
                 </>
             )}
         </VStack>
