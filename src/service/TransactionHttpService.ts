@@ -25,3 +25,13 @@ export const setKnownMerchantToTransaction = (tranSystemId: number, merchantId: 
         mapTransaction(res.data)
     );
 }
+
+export const recalculatePossibleMerchants = (systemId: number): Promise<Transaction> => {
+    return ApiClient.post<TransactionRaw>('transactions/recalculate-possible-merchants-by-id', {} , {
+        params: {
+            systemId,
+        }
+    }).then((res: AxiosResponse<TransactionRaw>) =>
+        mapTransaction(res.data)
+    );
+}
