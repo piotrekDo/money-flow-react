@@ -1,6 +1,22 @@
 import type { Subcategory } from "./Category";
 import type { KnownMerchant, PossibleMerchant } from "./KnownMerchant";
 
+export interface FetchFinancialTransactionsResponseRaw {
+    startDate: Date;
+    endDate: Date;
+    transactions: TransactionRaw[];
+    allTransactionCount: number;
+    unknownMerchantTransactionCount: number;
+    incomeTransactionCount: number;
+    expenseTransactionCount: number;
+    cashTransactionCount: number;
+    missingDataTransactionCount: number;
+}
+
+export type FetchFinancialTransactionsResponse = Omit<FetchFinancialTransactionsResponseRaw, 'transactions'> & {
+    transactions: Transaction[];
+}
+
 export interface TransactionRaw {
     systemId: number;
     tranType: string;

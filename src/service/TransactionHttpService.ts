@@ -1,17 +1,17 @@
 import type { AxiosResponse } from 'axios';
 import ApiClient from './ApiClient';
-import type { TransactionRaw, Transaction } from '@/model/Transaction';
-import { mapTransaction } from './TransactionService';
+import type { FetchFinancialTransactionsResponse, FetchFinancialTransactionsResponseRaw } from '@/model/Transaction';
+import { mapFetchTransactionsResponse } from './TransactionService';
 
-export const fetchTransactionDateBetween = (startDate: string, endDate: string, signal?: AbortSignal): Promise<Transaction[]> => {
-    return ApiClient.get<TransactionRaw[]>('transactions/date-between', {
+export const fetchTransactionDateBetween = (startDate: string, endDate: string, signal?: AbortSignal): Promise<FetchFinancialTransactionsResponse> => {
+    return ApiClient.get<FetchFinancialTransactionsResponseRaw>('transactions/date-between', {
         signal,
         params: {
             startDate,
             endDate
         }
     })
-        .then((res: AxiosResponse<TransactionRaw[]>) =>
-            res.data.map(mapTransaction)
+        .then((res: AxiosResponse<FetchFinancialTransactionsResponseRaw>) =>
+            mapFetchTransactionsResponse(res.data)
         );
 };

@@ -1,4 +1,4 @@
-import type { Transaction } from '@/model/Transaction';
+import type { FetchFinancialTransactionsResponse, Transaction } from '@/model/Transaction';
 import { fetchTransactionDateBetween } from '@/service/TransactionHttpService';
 import { useQuery } from '@tanstack/react-query';
 
@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 // }
 
 export const useTransactions = (startDate: string, endDate: string) => {
-  return useQuery<Transaction[], Error>({
+  return useQuery<FetchFinancialTransactionsResponse, Error>({
     queryKey: ['transactions', startDate, endDate],
     queryFn: ({ queryKey, signal }) => {
       const [, start, end] = queryKey as [string, string, string];

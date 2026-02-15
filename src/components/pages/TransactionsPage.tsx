@@ -1,83 +1,23 @@
 import { Flex, HStack, Text, VStack, Spinner } from '@chakra-ui/react'
-import { useMemo, useState } from 'react'
 import { TransactionCard } from '../transaction/card/TransactionCard'
 import { CalendarNavigation } from '../CalendarNavigation'
-import { useTransactions } from '@/hooks/useTransactions'
+import { useTransactionsPageData } from '@/hooks/useTransactionsPageData'
 
 export const TransactionsPage = () => {
-    const [selectedDate, setSelectedDate] = useState<Date>(new Date())
-    const [selectedFilter, setSelectedFilter] = useState<string>('Wszystkie')
-
-    const formatDate = (date: Date) => {
-        const year = date.getFullYear()
-        const month = String(date.getMonth() + 1).padStart(2, '0')
-        const day = String(date.getDate()).padStart(2, '0')
-        return `${year}-${month}-${day}`
-    }
-
-    const formatDayHeader = (date: Date) => {
-        return date.toLocaleDateString('pl-PL', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-        })
-    }
-
-    const from = useMemo(
-        () => new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
-        [selectedDate]
-    )
-
-    const to = useMemo(
-        () => new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0),
-        [selectedDate]
-    )
-
     const {
-        data: transactions = [],
+        selectedDate,
+        setSelectedDate,
+        selectedFilter,
+        setSelectedFilter,
+        filters,
+        filteredTransactions,
+        formatDayHeader,
         isLoading,
+        isFetching,
         isError,
-    } = useTransactions(formatDate(from), formatDate(to))
+    } = useTransactionsPageData();
 
-    const filters = useMemo(() => {
-        const counts = {
-            Wszystkie: transactions.length,
-            Nieznane: 0,
-            Przychody: 0,
-            Wydatki: 0,
-            Bankomat: 0,
-        }
-
-        transactions.forEach(t => {
-            if (!t.knownMerchant) counts.Nieznane++
-            if (t.tranType === 'INCOME') counts.Przychody++
-            else if (t.tranType === 'EXPENSE') counts.Wydatki++
-            else counts.Bankomat++
-        })
-
-        return Object.entries(counts).map(([name, count]) => ({
-            name,
-            count,
-        }))
-    }, [transactions])
-
-    const filteredTransactions = useMemo(() => {
-        switch (selectedFilter) {
-            case 'Nieznane':
-                return transactions.filter(t => !t.knownMerchant)
-            case 'Przychody':
-                return transactions.filter(t => t.tranType === 'INCOME')
-            case 'Wydatki':
-                return transactions.filter(t => t.tranType === 'EXPENSE')
-            case 'Bankomat':
-                return transactions.filter(
-                    t => t.tranType !== 'INCOME' && t.tranType !== 'EXPENSE'
-                )
-            default:
-                return transactions
-        }
-    }, [transactions, selectedFilter])
+    const isBusy = isLoading || isFetching;
 
     return (
         <VStack minH="100vh" bg="#F5F1EE" gap={5} py={10}>
@@ -86,18 +26,12 @@ export const TransactionsPage = () => {
                 setSelectedDate={setSelectedDate}
             />
 
-            {isLoading && <Spinner size="lg" />}
+            {isBusy && <Spinner size="lg" />}
             {isError && <Text color="red.500">Błąd ładowania danych</Text>}
 
-            {!isLoading && !isError && (
+            {!isBusy && !isError && (
                 <>
-                    <HStack
-                        color="blackAlpha.800"
-                        w="600px"
-                        gap={0}
-                        borderRadius={10}
-                        overflow="hidden"
-                    >
+                    <HStack color="blackAlpha.800" w="600px" gap={0} borderRadius={10} overflow="hidden">
                         {filters.map(f => (
                             <Flex
                                 key={f.name}
@@ -115,9 +49,7 @@ export const TransactionsPage = () => {
                                 <Text>{f.name}</Text>
                                 <Text
                                     fontWeight="600"
-                                    bgColor={
-                                        selectedFilter === f.name ? '#C3D8C9' : '#FCE8D2'
-                                    }
+                                    bgColor={selectedFilter === f.name ? '#C3D8C9' : '#FCE8D2'}
                                     px={2}
                                     borderRadius="10px"
                                 >
@@ -139,17 +71,10 @@ export const TransactionsPage = () => {
                         return (
                             <div key={t.systemId}>
                                 {showHeader && (
-                                    <Text
-                                        alignSelf="flex-start"
-                                        color="blackAlpha.800"
-                                        fontWeight="700"
-                                        fontSize="md"
-                                        mb={2}
-                                    >
+                                    <Text alignSelf="flex-start" color="blackAlpha.800" fontWeight="700" fontSize="md" mb={2}>
                                         {formatDayHeader(new Date(t.tranDate))}
                                     </Text>
                                 )}
-
                                 <TransactionCard tran={t} />
                             </div>
                         )
