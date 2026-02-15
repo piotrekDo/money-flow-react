@@ -1,13 +1,11 @@
-import { Flex, HStack, Text, VStack } from '@chakra-ui/react'
-import { useEffect, useMemo, useState } from 'react'
+import { Flex, HStack, Text, VStack, Spinner } from '@chakra-ui/react'
+import { useMemo, useState } from 'react'
 import { TransactionCard } from '../transaction/card/TransactionCard'
-import type { Transaction } from '@/model/Transaction'
-import { fetchTransactionDateBetween } from '@/service/TransactionHttpService'
 import { CalendarNavigation } from '../CalendarNavigation'
+import { useTransactions } from '@/hooks/useTransactions'
 
 export const TransactionsPage = () => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date())
-    const [transactions, setTransactions] = useState<Transaction[]>([])
     const [selectedFilter, setSelectedFilter] = useState<string>('Wszystkie')
 
     const formatDate = (date: Date) => {
@@ -26,16 +24,21 @@ export const TransactionsPage = () => {
         })
     }
 
-    useEffect(() => {
-        const from = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1)
-        const to = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0)
+    const from = useMemo(
+        () => new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
+        [selectedDate]
+    )
 
-        fetchTransactionDateBetween(formatDate(from), formatDate(to))    
-        .then(t => {
-            console.log(t)
-            setTransactions(t)
-        })
-    }, [selectedDate])
+    const to = useMemo(
+        () => new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0),
+        [selectedDate]
+    )
+
+    const {
+        data: transactions = [],
+        isLoading,
+        isError,
+    } = useTransactions(formatDate(from), formatDate(to))
 
     const filters = useMemo(() => {
         const counts = {
@@ -78,60 +81,81 @@ export const TransactionsPage = () => {
 
     return (
         <VStack minH="100vh" bg="#F5F1EE" gap={5} py={10}>
-
             <CalendarNavigation
                 selectedDate={selectedDate}
                 setSelectedDate={setSelectedDate}
             />
 
-            <HStack color="blackAlpha.800" w="600px" gap={0} borderRadius={10} overflow={'hidden'}>
-                {filters.map(f => (
-                    <Flex
-                        key={f.name}
-                        gap={2}
-                        w="100%"
-                        justify="center"
-                        align="center"
-                        bg={selectedFilter === f.name ? '#DAE5DC' : '#FEF6EC'}
-                        cursor="pointer"
-                        onClick={() => setSelectedFilter(f.name)}
-                        py={2}
-                        transition="background .2s"
-                        borderRadius={selectedFilter == f.name ? '10px' : 0}
+            {isLoading && <Spinner size="lg" />}
+            {isError && <Text color="red.500">Błąd ładowania danych</Text>}
+
+            {!isLoading && !isError && (
+                <>
+                    <HStack
+                        color="blackAlpha.800"
+                        w="600px"
+                        gap={0}
+                        borderRadius={10}
+                        overflow="hidden"
                     >
-                        <Text>{f.name}</Text>
-                        <Text fontWeight="600" bgColor={selectedFilter == f.name ? '#C3D8C9' : '#FCE8D2'} paddingX={2} borderRadius={'10px'} justifyContent={'center'} alignItems={'center'}>{f.count}</Text>
-                    </Flex>
-                ))}
-            </HStack>
-
-            {filteredTransactions.map((t, index) => {
-                const currentDate = new Date(t.tranDate).toDateString()
-                const prevDate =
-                    index > 0
-                        ? new Date(filteredTransactions[index - 1].tranDate).toDateString()
-                        : null
-
-                const showHeader = currentDate !== prevDate
-
-                return (
-                    <div key={t.systemId}>
-                        {showHeader && (
-                            <Text
-                                alignSelf="flex-start"
-                                color={'blackAlpha.800'}
-                                fontWeight="700"
-                                fontSize='md'
-                                mb={2}
+                        {filters.map(f => (
+                            <Flex
+                                key={f.name}
+                                gap={2}
+                                w="100%"
+                                justify="center"
+                                align="center"
+                                bg={selectedFilter === f.name ? '#DAE5DC' : '#FEF6EC'}
+                                cursor="pointer"
+                                onClick={() => setSelectedFilter(f.name)}
+                                py={2}
+                                transition="background .2s"
+                                borderRadius={selectedFilter === f.name ? '10px' : 0}
                             >
-                                {formatDayHeader(t.tranDate)}
-                            </Text>
-                        )}
+                                <Text>{f.name}</Text>
+                                <Text
+                                    fontWeight="600"
+                                    bgColor={
+                                        selectedFilter === f.name ? '#C3D8C9' : '#FCE8D2'
+                                    }
+                                    px={2}
+                                    borderRadius="10px"
+                                >
+                                    {f.count}
+                                </Text>
+                            </Flex>
+                        ))}
+                    </HStack>
 
-                        <TransactionCard tran={t} />
-                    </div>
-                )
-            })}
+                    {filteredTransactions.map((t, index) => {
+                        const currentDate = new Date(t.tranDate).toDateString()
+                        const prevDate =
+                            index > 0
+                                ? new Date(filteredTransactions[index - 1].tranDate).toDateString()
+                                : null
+
+                        const showHeader = currentDate !== prevDate
+
+                        return (
+                            <div key={t.systemId}>
+                                {showHeader && (
+                                    <Text
+                                        alignSelf="flex-start"
+                                        color="blackAlpha.800"
+                                        fontWeight="700"
+                                        fontSize="md"
+                                        mb={2}
+                                    >
+                                        {formatDayHeader(new Date(t.tranDate))}
+                                    </Text>
+                                )}
+
+                                <TransactionCard tran={t} />
+                            </div>
+                        )
+                    })}
+                </>
+            )}
         </VStack>
     )
 }
