@@ -1,5 +1,6 @@
 import { useTransactions } from '@/hooks/useTransactions';
 import type { Transaction } from '@/model/Transaction';
+import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
 export type TransactionFilter = {
@@ -15,7 +16,8 @@ export type Totals = {
     totalCashOut: number;
 }
 
-export const useTransactionsPageData = (initialDate: Date = new Date()) => {
+export const useTransactionsPageData = (initialDate: Date = new Date(2025, 11, 1)) => {
+    const queryClient = useQueryClient();
     const [selectedDate, setSelectedDate] = useState<Date>(initialDate)
     const [selectedFilter, setSelectedFilter] = useState<string>('Wszystkie')
 

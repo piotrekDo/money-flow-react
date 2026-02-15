@@ -5,15 +5,16 @@ import { TopLeftSide } from './TopLeftSide';
 import { TopRightSide } from './TopRightSide';
 
 interface Props {
-    tran: Transaction
+    tran: Transaction,
+    isFetching: boolean
 }
 
-export const TransactionCard = ({ tran }: Props) => {
+export const TransactionCard = ({ tran, isFetching }: Props) => {
     const height = 200;
     const width = height * 3;
 
     return (
-        <VStack h={height} w={width} gap={0} bgColor={'#FEFCFC'} padding={2} borderRadius={10}>
+        <VStack h={height} w={width} gap={0} bgColor={'#FEFCFC'} padding={2} borderRadius={10} opacity={isFetching ? .4 : 1}>
             <HStack w={'100%'} h={'80%'} >
                 <TopLeftSide tran={tran} />
                 <TopRightSide tran={tran} />

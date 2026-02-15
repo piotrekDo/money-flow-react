@@ -1,7 +1,7 @@
-import type { FetchFinancialTransactionsResponse, FetchFinancialTransactionsResponseRaw } from '@/model/Transaction';
+import type { FetchFinancialTransactionsResponse, FetchFinancialTransactionsResponseRaw, Transaction, TransactionRaw } from '@/model/Transaction';
 import type { AxiosResponse } from 'axios';
 import ApiClient from './ApiClient';
-import { mapFetchTransactionsResponse } from './TransactionService';
+import { mapFetchTransactionsResponse, mapTransaction } from './TransactionService';
 
 export const fetchTransactionDateBetween = (startDate: string, endDate: string, signal?: AbortSignal): Promise<FetchFinancialTransactionsResponse> => {
     return ApiClient.get<FetchFinancialTransactionsResponseRaw>('transactions/date-between', {
@@ -15,13 +15,13 @@ export const fetchTransactionDateBetween = (startDate: string, endDate: string, 
     );
 };
 
-export const setKnownMerchantToTransaction = (tranSystemId: number, merchantId: number) => {
-    return ApiClient.post<FetchFinancialTransactionsResponseRaw>('transactions/set-known-merchant', {} , {
+export const setKnownMerchantToTransaction = (tranSystemId: number, merchantId: number): Promise<Transaction> => {
+    return ApiClient.post<TransactionRaw>('transactions/set-known-merchant', {} , {
         params: {
             tranSystemId,
             merchantId
         }
-    }).then((res: AxiosResponse<FetchFinancialTransactionsResponseRaw>) =>
-        mapFetchTransactionsResponse(res.data)
+    }).then((res: AxiosResponse<TransactionRaw>) =>
+        mapTransaction(res.data)
     );
 }

@@ -37,7 +37,7 @@ export const TransactionsPage = () => {
                 setSelectedFilter={setSelectedFilter}
             />
 
-            {isBusy && <>
+            {isLoading && <>
                 <TransactionCardSkeleton />
                 <TransactionCardSkeleton />
                 <TransactionCardSkeleton />
@@ -46,10 +46,10 @@ export const TransactionsPage = () => {
             </>}
             {isError && <Text color="red.500">Błąd ładowania danych</Text>}
 
-            {!isBusy && !isError && (
+            {!isLoading && !isError && (
                 <>
                     <TotalsSection totals={totals}/>
-                    <TransactionsList filteredTransactions={filteredTransactions} />
+                    <TransactionsList filteredTransactions={filteredTransactions} isFetching={isFetching}/>
                 </>
             )}
         </VStack>

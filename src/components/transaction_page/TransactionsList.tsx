@@ -4,6 +4,7 @@ import { TransactionCard } from '../transaction/card/TransactionCard'
 
 interface Props {
     filteredTransactions: Transaction[],
+    isFetching: boolean,
 }
 
 export const formatDayHeader = (date: Date) =>
@@ -14,7 +15,7 @@ export const formatDayHeader = (date: Date) =>
         year: 'numeric',
     })
 
-export const TransactionsList = ({ filteredTransactions }: Props) => {
+export const TransactionsList = ({ filteredTransactions, isFetching }: Props) => {
     return (
         <VStack align="stretch" gap={3}>
             {filteredTransactions.map((t, index) => {
@@ -33,7 +34,7 @@ export const TransactionsList = ({ filteredTransactions }: Props) => {
                                 {formatDayHeader(new Date(t.tranDate))}
                             </Text>
                         )}
-                        <TransactionCard tran={t} />
+                        <TransactionCard tran={t} isFetching={isFetching}/>
                     </div>
                 )
             })}
