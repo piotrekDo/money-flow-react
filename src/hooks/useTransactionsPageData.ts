@@ -70,7 +70,6 @@ export const useTransactionsPageData = (initialDate: Date = new Date()) => {
     }, [data]);
 
     const filteredTransactions = useMemo<Transaction[]>(() => {
-        console.log(data)
         if (!data?.transactions) return []
 
         switch (selectedFilter) {
