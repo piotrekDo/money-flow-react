@@ -10,3 +10,12 @@ export interface Subcategory {
     categoryIcon: string;
     categoryColor: string;
 }
+
+export interface Category {
+    id: number;
+    name: string;
+    imageUrl: string;
+    icon: string;
+    color: string;
+    subcategories: Subcategory[];
+}

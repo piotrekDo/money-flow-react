@@ -1,3 +1,4 @@
+import type { Subcategory } from '@/model/Category';
 import type { Transaction } from '@/model/Transaction';
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import { CardBottom } from './CardBottom';
@@ -7,9 +8,10 @@ import { TopRightSide } from './TopRightSide';
 interface Props {
     tran: Transaction,
     isFetching: boolean
+    subcategories: Subcategory[];
 }
 
-export const TransactionCard = ({ tran, isFetching }: Props) => {
+export const TransactionCard = ({ tran, isFetching, subcategories }: Props) => {
     const height = 200;
     const width = height * 3;
 
@@ -20,7 +22,7 @@ export const TransactionCard = ({ tran, isFetching }: Props) => {
                 <TopRightSide tran={tran} />
             </HStack>
             <Flex bgColor={'blackAlpha.200'} w={'100%'} height={'1px'} />
-            <CardBottom tran={tran} />
+            <CardBottom tran={tran} subcategories={subcategories || []} />
         </VStack>
     )
 }

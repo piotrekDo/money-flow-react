@@ -1,9 +1,18 @@
+import type { KnownMerchant } from '@/model/KnownMerchant';
 import type { AxiosResponse } from 'axios';
 import ApiClient from './ApiClient';
-import type { KnownMerchant } from '@/model/KnownMerchant';
 
 
 export const fetchAllKnownMerchants = (signal?: AbortSignal) => {
-  return ApiClient.get<KnownMerchant[]>('merchants/all', {signal})
-  .then((res: AxiosResponse<KnownMerchant[]>) => res.data);
+  return ApiClient.get<KnownMerchant[]>('merchants/all', { signal })
+    .then((res: AxiosResponse<KnownMerchant[]>) => res.data);
 };
+
+export const addSubcategoryToMerchant = (merchantId: number, subcategoryId: number) => {
+  return ApiClient.post<KnownMerchant>('merchants/add-subcategory', {}, {
+    params: {
+      merchantId,
+      subcategoryId
+    }
+  }).then((res: AxiosResponse<KnownMerchant>) => res.data)
+}

@@ -1,4 +1,4 @@
-import type { FetchFinancialTransactionsResponse, Transaction } from '@/model/Transaction';
+import type { FetchFinancialTransactionsResponse } from '@/model/Transaction';
 import { fetchTransactionDateBetween } from '@/service/TransactionHttpService';
 import { useQuery } from '@tanstack/react-query';
 

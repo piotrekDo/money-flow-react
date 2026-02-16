@@ -1,10 +1,6 @@
+import { Tooltip } from "@/components/ui/tooltip";
 import type { Transaction } from '@/model/Transaction';
-import { VStack, IconButton, HStack, Box, Flex, Text, Badge, } from '@chakra-ui/react'
-import { Tooltip } from "@/components/ui/tooltip"
-import { BsFillBagPlusFill } from "react-icons/bs";
-import { CategoryMissingBadge } from '../CategoryMissingBadge';
-import { MerchantAnsureBadge } from '../MerchantAnsureBadge';
-import { BadgesSection } from './BadgesSection';
+import { Flex, HStack, Text } from '@chakra-ui/react';
 
 interface Props {
     tran: Transaction
@@ -28,7 +24,7 @@ export const HeaderSection = ({ tran }: Props) => {
                         }}
                         referrerPolicy='no-referrer'
                     />
-                    <Text  lineClamp={1} maxW={'250px'} alignSelf={'flex-start'} fontSize={''} fontWeight={'600'} color={tran.knownMerchant ? 'blackAlpha.800' : 'orange.400'}>{tran.knownMerchant?.merchantName || tran.merchantDataRaw}</Text>
+                    <Text lineClamp={1} maxW={'250px'} alignSelf={'flex-start'} fontSize={''} fontWeight={'600'} color={!tran.knownMerchant || tran.knownMerchant.merchantId == 0 ? 'orange.400' : 'blackAlpha.800'}>{tran.knownMerchant?.merchantName || tran.merchantDataRaw}</Text>
                 </HStack>
             </Tooltip>
             <Flex align={'start'} >

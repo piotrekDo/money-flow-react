@@ -5,6 +5,7 @@ import { TransactionCardSkeleton } from '../transaction/TransactionCardSkeleton'
 import { FiltersSection } from '../transaction_page/FiltersSection'
 import { TransactionsList } from '../transaction_page/TransactionsList'
 import { TotalsSection } from '../transaction_page/TotalsSection'
+import { useSubcategories } from '@/hooks/useSubcategories'
 
 export const TransactionsPage = () => {
     const {

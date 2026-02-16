@@ -1,3 +1,4 @@
+import { useSubcategories } from '@/hooks/useSubcategories'
 import type { Transaction } from '@/model/Transaction'
 import { Text, VStack } from '@chakra-ui/react'
 import { TransactionCard } from '../transaction/card/TransactionCard'
@@ -16,6 +17,8 @@ export const formatDayHeader = (date: Date) =>
     })
 
 export const TransactionsList = ({ filteredTransactions, isFetching }: Props) => {
+    const { data: subcategories } = useSubcategories();
+
     return (
         <VStack align="stretch" gap={3}>
             {filteredTransactions.map((t, index) => {
@@ -34,7 +37,7 @@ export const TransactionsList = ({ filteredTransactions, isFetching }: Props) =>
                                 {formatDayHeader(new Date(t.tranDate))}
                             </Text>
                         )}
-                        <TransactionCard tran={t} isFetching={isFetching}/>
+                        <TransactionCard tran={t} isFetching={isFetching} subcategories={subcategories || []} />
                     </div>
                 )
             })}

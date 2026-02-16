@@ -1,3 +1,5 @@
+import type { Subcategory } from "./Category";
+
 export interface KnownMerchantKeyWord {
     id: number,
     keyword: string,
@@ -9,7 +11,8 @@ export interface KnownMerchant {
     merchantCode: string,
     merchantName: string,
     imageUrl: string,
-    keywords: KnownMerchantKeyWord[]
+    keywords: KnownMerchantKeyWord[],
+    subcategories: Subcategory[]
 }
 
 export interface PossibleMerchant {
