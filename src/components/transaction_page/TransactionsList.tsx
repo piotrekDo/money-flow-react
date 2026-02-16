@@ -1,46 +1,81 @@
+import { useMemo } from 'react'
 import { useSubcategories } from '@/hooks/useSubcategories'
 import type { Transaction } from '@/model/Transaction'
 import { Text, VStack } from '@chakra-ui/react'
 import { TransactionCard } from '../transaction/card/TransactionCard'
 
 interface Props {
-    filteredTransactions: Transaction[],
-    isFetching: boolean,
+  filteredTransactions: Transaction[]
+  isFetching: boolean
 }
 
 export const formatDayHeader = (date: Date) =>
-    date.toLocaleDateString('pl-PL', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-    })
+  date.toLocaleDateString('pl-PL', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
 
-export const TransactionsList = ({ filteredTransactions, isFetching }: Props) => {
-    const { data: subcategories } = useSubcategories();
+export const TransactionsList = ({
+  filteredTransactions,
+  isFetching,
+}: Props) => {
+  const { data: subcategories } = useSubcategories()
 
-    return (
-        <VStack align="stretch" gap={3}>
-            {filteredTransactions.map((t, index) => {
-                const currentDate = new Date(t.tranDate).toDateString()
-                const prevDate =
-                    index > 0
-                        ? new Date(filteredTransactions[index - 1].tranDate).toDateString()
-                        : null
+  const groupedTransactions = useMemo(() => {
+    const map = new Map<
+      string,
+      {
+        date: Date
+        transactions: Transaction[]
+        sum: number
+      }
+    >()
 
-                const showHeader = currentDate !== prevDate
+    for (const t of filteredTransactions) {
+      const dateObj = new Date(t.tranDate)
+      const key = dateObj.toDateString()
 
-                return (
-                    <div key={t.systemId}>
-                        {showHeader && (
-                            <Text alignSelf="flex-start" color="blackAlpha.800" fontWeight="700" fontSize="md" mb={2}>
-                                {formatDayHeader(new Date(t.tranDate))}
-                            </Text>
-                        )}
-                        <TransactionCard tran={t} isFetching={isFetching} subcategories={subcategories || []} />
-                    </div>
-                )
-            })}
+      if (!map.has(key)) {
+        map.set(key, {
+          date: dateObj,
+          transactions: [],
+          sum: 0,
+        })
+      }
+
+      const group = map.get(key)!
+      group.transactions.push(t)
+      group.sum += t.amount
+    }
+
+    return Array.from(map.values())
+  }, [filteredTransactions])
+
+  return (
+    <VStack align="stretch" gap={5}>
+      {groupedTransactions.map(group => (
+        <VStack key={group.date.toDateString()} align="stretch" gap={2}>
+          <Text
+            alignSelf="flex-start"
+            color="blackAlpha.800"
+            fontWeight="700"
+            fontSize="md"
+          >
+            {formatDayHeader(group.date)} — {group.sum.toFixed(2)} zł
+          </Text>
+
+          {group.transactions.map(t => (
+            <TransactionCard
+              key={t.systemId}
+              tran={t}
+              isFetching={isFetching}
+              subcategories={subcategories || []}
+            />
+          ))}
         </VStack>
-    )
+      ))}
+    </VStack>
+  )
 }

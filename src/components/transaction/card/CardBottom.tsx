@@ -1,10 +1,14 @@
+import { DynamicIcon } from "@/components/DynamicIcon";
 import { Tooltip } from "@/components/ui/tooltip";
+import { useAddSubcategoryToTransaction } from "@/hooks/useAddSubcategoryToTransaction";
 import { useSetKnownMerchant } from "@/hooks/useSetKnownMerchant";
 import type { Subcategory } from "@/model/Category";
 import type { Transaction } from "@/model/Transaction";
-import { Flex, HStack, Text } from '@chakra-ui/react';
+import { Flex, HStack } from '@chakra-ui/react';
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { FaChevronDown } from "react-icons/fa";
+import { PossibleMerchantSelector } from "./PossibleMerchantSelector";
+import { UnknownMerchantConfirmSelector } from "./UnknownMerchantConfirmSelector";
 
 interface Props {
     tran: Transaction;
@@ -14,6 +18,7 @@ interface Props {
 
 export const CardBottom = ({ tran, subcategories }: Props) => {
     const setKnownMerchant = useSetKnownMerchant();
+    const addSubcategory = useAddSubcategoryToTransaction();
 
     const isKnownMerchant = !!tran.knownMerchant;
     const isKnownMerchantUnsure = tran.knownMerchantUnsure;
@@ -24,40 +29,35 @@ export const CardBottom = ({ tran, subcategories }: Props) => {
         setKnownMerchant.mutate({ tranSystemId, merchantId });
     }
 
+    const onSetSubcategory = (subcategoryId: number) => {
+        const tranSystemId = tran.systemId;
+        addSubcategory.mutate({ tranSystemId, subcategoryId })
+    }
 
     return (
         <HStack w={'100%'} h={'20%'} justify={'space-between'}>
             <AiFillQuestionCircle size={25} color='#EFA444' />
             <HStack w={'90%'} gap={1}>
-                {!isKnownMerchant && tran.possibleMerchants.map(pm => (
-                    <Tooltip key={pm.id} content={
-                        <>
-                            <div>{pm.knownMerchantDto.merchantId}</div>
-                            <div>{pm.knownMerchantDto.merchantName}</div>
-                            <div>Dopasowania: {pm.matchedKeywords}</div>
-                            <div>Punkty: {pm.points}</div>
-                        </>
-                    }>
-                        <Flex bgColor={'#2B8D63'} borderRadius={'10px'} px={2} justify={'center'} align={'center'} cursor={'pointer'}
-                            onClick={() => onClickHandle(pm.knownMerchantDto.merchantId)}>
-                            <Text lineClamp={1} maxW={'80px'} color={'whiteAlpha.800'} textAlign={'center'}>{pm.knownMerchantDto.merchantName}</Text>
-                        </Flex>
-                    </Tooltip>
-                ))}
-                {!isKnownMerchant && (!tran.possibleMerchants || tran.possibleMerchants.length == 0) && (
-                    <Tooltip content={
-                        <>
-                            <div>Sprzedawca nieznany</div>
-                        </>
-                    }>
-                        <Flex bgColor={'#EFA444'} borderRadius={'10px'} px={2} justify={'center'} align={'center'} cursor={'pointer'}
-                            onClick={() => onClickHandle(0)}>
-                            <Text lineClamp={1} maxW={'80px'} color={'whiteAlpha.800'} textAlign={'center'}>Nieznany</Text>
-                        </Flex>
-                    </Tooltip>
-                )}
-                {isKnownMerchant && missingCategory && (
-                    <HStack></HStack>
+                {!isKnownMerchant && tran.possibleMerchants.map(pm => <PossibleMerchantSelector key={pm.id} pm={pm} onClickHandle={onClickHandle} />)}
+                {!isKnownMerchant && (!tran.possibleMerchants || tran.possibleMerchants.length == 0) && <UnknownMerchantConfirmSelector onClickHandle={onClickHandle} />}
+                {isKnownMerchant && missingCategory && tran.knownMerchant.subcategories.length > 0 && (
+                    <HStack gap={4} ml={5}>
+                        {
+                            tran.knownMerchant.subcategories.map(s => {
+                                return (
+                                    <Tooltip key={s.id} content={
+                                        <>
+                                            <div>{s.name}</div>
+                                        </>
+                                    }>
+                                        <Flex cursor={'pointer'} onClick={() => onSetSubcategory(s.id)}>
+                                            <DynamicIcon name={s.icon} color={s.color} size={25} />
+                                        </Flex>
+                                    </Tooltip>
+                                )
+                            })
+                        }
+                    </HStack>
                 )}
             </HStack>
             <FaChevronDown size={20} color='#A6A8AE' cursor={'pointer'} />

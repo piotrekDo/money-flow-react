@@ -24,7 +24,16 @@ export const HeaderSection = ({ tran }: Props) => {
                         }}
                         referrerPolicy='no-referrer'
                     />
-                    <Text lineClamp={1} maxW={'250px'} alignSelf={'flex-start'} fontSize={''} fontWeight={'600'} color={!tran.knownMerchant || tran.knownMerchant.merchantId == 0 ? 'orange.400' : 'blackAlpha.800'}>{tran.knownMerchant?.merchantName || tran.merchantDataRaw}</Text>
+                    <Text 
+                    lineClamp={1} 
+                    maxW={'250px'} 
+                    alignSelf={'flex-start'} 
+                    fontSize={''} 
+                    fontWeight={'600'} 
+                    color={!tran.knownMerchant || tran.knownMerchant.merchantId == 0 ? 'orange.400' : 'blackAlpha.800'}
+                    >
+                        { tran.knownMerchant?.merchantName && tran.knownMerchant.merchantId != 0 ? tran.knownMerchant.merchantName : tran.merchantDataRaw}
+                        </Text>
                 </HStack>
             </Tooltip>
             <Flex align={'start'} >

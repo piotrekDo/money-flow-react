@@ -16,7 +16,7 @@ export const fetchTransactionDateBetween = (startDate: string, endDate: string, 
 };
 
 export const setKnownMerchantToTransaction = (tranSystemId: number, merchantId: number): Promise<Transaction> => {
-    return ApiClient.post<TransactionRaw>('transactions/set-known-merchant', {} , {
+    return ApiClient.post<TransactionRaw>('transactions/set-known-merchant', {}, {
         params: {
             tranSystemId,
             merchantId
@@ -27,9 +27,20 @@ export const setKnownMerchantToTransaction = (tranSystemId: number, merchantId: 
 }
 
 export const recalculatePossibleMerchants = (systemId: number): Promise<Transaction> => {
-    return ApiClient.post<TransactionRaw>('transactions/recalculate-possible-merchants-by-id', {} , {
+    return ApiClient.post<TransactionRaw>('transactions/recalculate-possible-merchants-by-id', {}, {
         params: {
             systemId,
+        }
+    }).then((res: AxiosResponse<TransactionRaw>) =>
+        mapTransaction(res.data)
+    );
+}
+
+export const addSubcategoryToTransaction = (tranSystemId: number, subcategoryId: number) => {
+    return ApiClient.post<TransactionRaw>('transactions/add-subcategory', {}, {
+        params: {
+            tranSystemId,
+            subcategoryId
         }
     }).then((res: AxiosResponse<TransactionRaw>) =>
         mapTransaction(res.data)

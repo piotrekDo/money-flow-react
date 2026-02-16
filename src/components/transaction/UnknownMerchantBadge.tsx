@@ -1,5 +1,5 @@
-import { BADGE_ICON_SIZE, BADGE_SHADOW, BADGE_TEXT_SIZE } from '@/library';
-import { Flex, Text } from '@chakra-ui/react'
+import { BADGE_ICON_SIZE, BADGE_TEXT_SIZE } from '@/library';
+import { Flex, Text } from '@chakra-ui/react';
 import { IoStorefront } from "react-icons/io5";
 
 export const UnknownMerchantBadge = () => {

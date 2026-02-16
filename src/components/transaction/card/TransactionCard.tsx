@@ -16,7 +16,7 @@ export const TransactionCard = ({ tran, isFetching, subcategories }: Props) => {
     const width = height * 3;
 
     return (
-        <VStack h={height} w={width} gap={0} bgColor={'#FEFCFC'} padding={2} borderRadius={10} opacity={isFetching ? .4 : 1}>
+        <VStack h={height} w={width} gap={0} bgColor={'#FEFCFC'} padding={2} borderRadius={10} opacity={isFetching ? .4 : 1} shadow={'sm'}>
             <HStack w={'100%'} h={'80%'} >
                 <TopLeftSide tran={tran} />
                 <TopRightSide tran={tran} />

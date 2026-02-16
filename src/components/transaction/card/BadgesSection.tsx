@@ -1,10 +1,10 @@
+import { DynamicIcon } from '@/components/DynamicIcon';
 import type { Transaction } from '@/model/Transaction';
-import { VStack, IconButton, HStack, Box, Flex, Text, Badge, } from '@chakra-ui/react'
-import { Tooltip } from "@/components/ui/tooltip"
-import { BsFillBagPlusFill } from "react-icons/bs";
+import { Flex, HStack, Text } from '@chakra-ui/react';
 import { CategoryMissingBadge } from '../CategoryMissingBadge';
 import { MerchantAnsureBadge } from '../MerchantAnsureBadge';
 import { UnknownMerchantBadge } from '../UnknownMerchantBadge';
+import { BADGE_SHADOW } from '@/library';
 
 interface Props {
     tran: Transaction
@@ -20,6 +20,12 @@ export const BadgesSection = ({ tran }: Props) => {
             {!isKnownMerchant && <UnknownMerchantBadge />}
             {isKnownMerchant && isKnownMerchantUnsure && <MerchantAnsureBadge />}
             {missingCategory && <CategoryMissingBadge />}
+            {!missingCategory && (
+                <Flex justify={'center'} align={'center'} color={'blackAlpha.800'} px={2} gap={2}  borderRadius={'10px'} shadow={'sm'}>
+                    <DynamicIcon name={tran.subcategoryDto.icon} color={tran.subcategoryDto.color} />
+                    <Text>{tran.subcategoryDto.name}</Text>
+                </Flex>
+            )}
         </HStack>
     )
 }
