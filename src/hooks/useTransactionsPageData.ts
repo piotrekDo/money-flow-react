@@ -52,7 +52,7 @@ export const useTransactionsPageData = (initialDate: Date = new Date(2025, 11, 1
         ]
         const counts = {
             Wszystkie: data.allTransactionCount,
-            Nieznane: data.unknownMerchantTransactionCount,
+            Nieznane: data.missingDataTransactionCount,
             Przychody: data.incomeTransactionCount,
             Wydatki: data.expenseTransactionCount,
             Bankomat: data.cashTransactionCount,
@@ -76,7 +76,7 @@ export const useTransactionsPageData = (initialDate: Date = new Date(2025, 11, 1
 
         switch (selectedFilter) {
             case 'Nieznane':
-                return data.transactions.filter(t => !t.knownMerchant)
+                return data.transactions.filter(t => !t.subcategoryDto)
             case 'Przychody':
                 return data.transactions.filter(t => t.tranType === 'INCOME')
             case 'Wydatki':

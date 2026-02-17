@@ -1,16 +1,19 @@
-import { Box } from "@chakra-ui/react";
-import { TransactionsPage } from "./components/pages/TransactionsPage";
-import { CategoriesPage } from "./components/pages/CategoriesPage";
-import { KnownMerchantsPage } from "./components/pages/KnownMerchantsPage";
+import { Box, Flex } from "@chakra-ui/react";
+import { Outlet } from "react-router";
+import { MainMenu } from "./components/main-menu/MainMenu";
 
 function App() {
 
   return (
-    <Box minH='100vh' w='100vw' maxW={'100vw'}>
-      {/* <TransactionsPage /> */}
-      {/* <CategoriesPage /> */}
-      <KnownMerchantsPage />
-    </Box>
+    <Flex>
+      <MainMenu />
+
+      <Box
+        w="100%"
+      >
+        <Outlet />
+      </Box>
+    </Flex>
   );
 }
 
