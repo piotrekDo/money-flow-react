@@ -24,6 +24,13 @@ export const TransactionsList = ({
   const { data: subcategories } = useSubcategories()
 
   const groupedTransactions = useMemo(() => {
+    // 1️⃣ sortujemy malejąco (najmłodsze pierwsze)
+    const sorted = [...filteredTransactions].sort(
+      (a, b) =>
+        new Date(b.tranDate).getTime() -
+        new Date(a.tranDate).getTime()
+    )
+
     const map = new Map<
       string,
       {
@@ -33,7 +40,7 @@ export const TransactionsList = ({
       }
     >()
 
-    for (const t of filteredTransactions) {
+    for (const t of sorted) {
       const dateObj = new Date(t.tranDate)
       const key = dateObj.toDateString()
 

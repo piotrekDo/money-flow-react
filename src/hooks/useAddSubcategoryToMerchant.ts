@@ -1,3 +1,4 @@
+import { QUERY_KEY_CATEGORIES, QUERY_KEY_MERCHANTS, QUERY_KEY_SUBCATEGORIES } from '@/library';
 import type { KnownMerchant } from '@/model/KnownMerchant';
 import { addSubcategoryToMerchant } from '@/service/KnownMerchantHttpService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -16,14 +17,14 @@ export const useAddSubcategoryToMerchant = () => {
 
         onSuccess: (result: KnownMerchant, variables: {selectedMerchant: KnownMerchant}) => {
             queryClient.invalidateQueries({
-                queryKey: ['subcategories'],
+                queryKey: [QUERY_KEY_SUBCATEGORIES],
             });
 
             queryClient.invalidateQueries({
-                queryKey: ['categories'],
+                queryKey: [QUERY_KEY_CATEGORIES],
             });
             queryClient.invalidateQueries({
-                queryKey: ['merchants'],
+                queryKey: [QUERY_KEY_MERCHANTS],
             });
 
             variables.selectedMerchant.subcategories = result.subcategories

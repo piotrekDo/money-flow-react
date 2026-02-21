@@ -1,3 +1,4 @@
+import { QUERY_KEY_CATEGORIES, QUERY_KEY_SUBCATEGORIES } from '@/library';
 import type { Subcategory } from '@/model/Category';
 import { changeSubcategoryCategory } from '@/service/CategoryHttpService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -16,11 +17,11 @@ export const useChangeSubcategoryCategory = () => {
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ['subcategories'],
+                queryKey: [QUERY_KEY_SUBCATEGORIES],
             });
 
             queryClient.invalidateQueries({
-                queryKey: ['categories'],
+                queryKey: [QUERY_KEY_CATEGORIES],
             });
         },
 

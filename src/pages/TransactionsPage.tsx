@@ -1,11 +1,11 @@
 import { useTransactionsPageData } from '@/hooks/useTransactionsPageData'
 import { Text, VStack } from '@chakra-ui/react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { CalendarNavigation } from '../CalendarNavigation'
-import { TransactionCardSkeleton } from '../transaction/TransactionCardSkeleton'
-import { FiltersSection } from '../transaction_page/FiltersSection'
-import { TotalsSection } from '../transaction_page/TotalsSection'
-import { TransactionsList } from '../transaction_page/TransactionsList'
+import { CalendarNavigation } from '../components/CalendarNavigation'
+import { TransactionCardSkeleton } from '../components/transaction/TransactionCardSkeleton'
+import { FiltersSection } from '../components/transaction_page/FiltersSection'
+import { TotalsSection } from '../components/transaction_page/TotalsSection'
+import { TransactionsList } from '../components/transaction_page/TransactionsList'
 
 export const TransactionsPage = () => {
     const {

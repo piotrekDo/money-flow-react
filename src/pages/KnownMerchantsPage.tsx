@@ -7,8 +7,8 @@ import {
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import { KnownMerchantsList } from '../known_merchant/KnownMerchantsList';
-import { SelectedMerchantPanel } from '../known_merchant/SelectedMerchantPanel';
+import { KnownMerchantsList } from '../components/known_merchant/KnownMerchantsList';
+import { SelectedMerchantPanel } from '../components/known_merchant/SelectedMerchantPanel';
 
 export const KnownMerchantsPage = () => {
   const { data: subcategories } = useSubcategories();

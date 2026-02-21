@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import { CategoriesPage } from "./components/pages/CategoriesPage";
-import { KnownMerchantsPage } from "./components/pages/KnownMerchantsPage";
-import { TransactionsPage } from "./components/pages/TransactionsPage";
+import { CategoriesPage } from "./pages/CategoriesPage";
+import { KnownMerchantsPage } from "./pages/KnownMerchantsPage";
+import { TransactionsPage } from "./pages/TransactionsPage";
 
 
 export const router = createBrowserRouter([

@@ -1,3 +1,4 @@
+import { QUERY_KEY_CATEGORIES, QUERY_KEY_MERCHANTS, QUERY_KEY_SUBCATEGORIES, QUERY_KEY_TRANSACTIONS } from '@/library';
 import type { Transaction } from '@/model/Transaction';
 import { addSubcategoryToTransaction } from '@/service/TransactionHttpService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,16 +16,16 @@ export const useAddSubcategoryToTransaction = () => {
 
         onSuccess: (result: Transaction) => {
             queryClient.invalidateQueries({
-                queryKey: ['transactions'],
+                queryKey: [QUERY_KEY_TRANSACTIONS],
             });
             queryClient.invalidateQueries({
-                queryKey: ['subcategories'],
+                queryKey: [QUERY_KEY_SUBCATEGORIES],
             });
             queryClient.invalidateQueries({
-                queryKey: ['categories'],
+                queryKey: [QUERY_KEY_CATEGORIES],
             });
             queryClient.invalidateQueries({
-                queryKey: ['merchants'],
+                queryKey: [QUERY_KEY_MERCHANTS],
             });
 
         },

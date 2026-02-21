@@ -1,6 +1,15 @@
-import type { Category, Subcategory } from '@/model/Category';
+import type { Category, Subcategory, SubcategoryWithMerchants } from '@/model/Category';
 import type { AxiosResponse } from 'axios';
 import ApiClient from './ApiClient';
+
+export const fetchSubcategoryWithMerchantsById = (id: number, signal?: AbortSignal) => {
+    return ApiClient.get<SubcategoryWithMerchants>('categories/subcategory-by-id', {
+        signal,
+        params: {
+            id
+        }
+    }).then((res: AxiosResponse<SubcategoryWithMerchants>) => res.data)
+}
 
 export const fetchAllSubcategoriesNoMerchants = (signal?: AbortSignal) => {
     return ApiClient.get<Subcategory[]>('categories/subcategories-no-merchants', { signal })

@@ -1,3 +1,4 @@
+import { QUERY_KEY_TRANSACTIONS } from '@/library';
 import type { Transaction } from '@/model/Transaction';
 import { setKnownMerchantToTransaction } from '@/service/TransactionHttpService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -13,7 +14,7 @@ export const useSetKnownMerchant = () => {
         },
         onSuccess: (updatedData: Transaction, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ['transactions'],
+                queryKey: [QUERY_KEY_TRANSACTIONS],
                 exact: false,
             });
         },
