@@ -1,4 +1,4 @@
-import type { FetchFinancialTransactionsResponse, FetchFinancialTransactionsResponseRaw, Transaction, TransactionRaw } from '@/model/Transaction';
+import type { FetchFinancialTransactionsResponse, FetchFinancialTransactionsResponseRaw, SetTransactionCommentRequest, Transaction, TransactionRaw } from '@/model/Transaction';
 import type { AxiosResponse } from 'axios';
 import ApiClient from './ApiClient';
 import { mapFetchTransactionsResponse, mapTransaction } from './TransactionService';
@@ -45,4 +45,11 @@ export const addSubcategoryToTransaction = (tranSystemId: number, subcategoryId:
     }).then((res: AxiosResponse<TransactionRaw>) =>
         mapTransaction(res.data)
     );
+}
+
+export const setTransactionComment = (commentRequest: SetTransactionCommentRequest) => {
+    return ApiClient.post<TransactionRaw>('transactions/set-comment', commentRequest)
+        .then((res: AxiosResponse<TransactionRaw>) =>
+            mapTransaction(res.data)
+        );
 }

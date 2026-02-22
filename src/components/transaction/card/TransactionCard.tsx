@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const TransactionCard = ({ tran, isFetching, subcategories }: Props) => {
-    const height = 160;
+    const height = 180;
     const width = height * 3;
 
     return (

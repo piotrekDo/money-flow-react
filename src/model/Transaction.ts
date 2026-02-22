@@ -27,6 +27,7 @@ export interface TransactionRaw {
     tranType: string;
     tranDate: string;
     amount: number;
+    comment: string;
     bankTranNr: string;
     accountNr: string;
     merchantDataRaw: string;
@@ -40,4 +41,9 @@ export interface TransactionRaw {
 
 export type Transaction = Omit<TransactionRaw, "tranDate"> & {
     tranDate: Date;
+};
+
+export interface SetTransactionCommentRequest {
+    tranSystemId: number;
+    comment: string | null
 };
