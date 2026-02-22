@@ -1,15 +1,14 @@
 import { HStack } from '@chakra-ui/react';
-import React, { useState } from 'react'
 import { NavSelectedMonth } from './NavSelectedMonth';
 import { NavSelectedYear } from './NavSelectedYear';
+import type { Mode } from '@/state/useSelectedTimeState';
 
 interface Props {
     selectedDate: Date;
-    setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+    setSelectedDate: (newDate: Date, newMode: Mode | null) => void
 }
 
-export const CalendarNavigation = ({selectedDate, setSelectedDate}: Props) => {
-
+export const CalendarNavigation = ({ selectedDate, setSelectedDate }: Props) => {
     return (
         <HStack justify={'center'} color={'blackAlpha.800'} fontWeight={'700'} fontSize={'1.2rem'}>
             <NavSelectedMonth selectedDate={selectedDate} setSelectedDate={setSelectedDate} />

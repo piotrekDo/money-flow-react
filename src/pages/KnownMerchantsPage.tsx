@@ -6,14 +6,28 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import { KnownMerchantsList } from '../components/known_merchant/KnownMerchantsList';
 import { SelectedMerchantPanel } from '../components/known_merchant/SelectedMerchantPanel';
 
 export const KnownMerchantsPage = () => {
+  const { merchantId } = useParams();
+  const navigate = useNavigate();
   const { data: subcategories } = useSubcategories();
   const { data: merchants, isLoading: merchantsLoading, isFetching: merchantsFetching } = useKnownMerchants();
-  const [selectedMerchant, setSelectedMerchant] = useState<KnownMerchant | undefined>(undefined);
+
+  const selectedMerchant = merchants?.find(
+    m => String(m.merchantId) === merchantId
+  );
+
+  const setSelectedMerchant = (merchant?: KnownMerchant) => {
+    if (!merchant) {
+      navigate("/merchants");
+      return;
+    }
+    navigate(`/merchants/${merchant.merchantId}`);
+  };
+
 
   return (
     <AnimatePresence>

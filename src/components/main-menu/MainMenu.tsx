@@ -6,6 +6,7 @@ import { IoMdHome } from "react-icons/io";
 import { IoStorefront } from "react-icons/io5";
 import { RiMenu2Line } from "react-icons/ri";
 import { MenuElement } from './MenuElement';
+import { ROUTE_CATEGORIES, ROUTE_MERCHANTS, ROUTE_TRANSACTIONS } from '@/library';
 
 
 const spinOnce = keyframes`
@@ -55,26 +56,26 @@ export const MainMenu = () => {
             <VStack mt={10} w={'100%'} align={'start'}>
                 <MenuElement
                     menuExpanded={menuExpanded}
-                    redirectLink='/'
+                    redirectLink=''
                     title='Home'
                     Icon={IoMdHome}
                 />
                 <MenuElement
                     menuExpanded={menuExpanded}
-                    redirectLink='/transactions'
+                    redirectLink={ROUTE_TRANSACTIONS}
                     title='Transakcje'
                     Icon={FaMoneyCheckDollar}
                 />
                 <MenuElement
                     menuExpanded={menuExpanded}
-                    redirectLink='/merchants'
+                    redirectLink={ROUTE_MERCHANTS}
                     title='Sprzedawcy'
                     Icon={IoStorefront}
                 />
 
                 <MenuElement
                     menuExpanded={menuExpanded}
-                    redirectLink='/categories'
+                    redirectLink={ROUTE_CATEGORIES}
                     title='Kategorie'
                     Icon={FaFolderTree}
                 />

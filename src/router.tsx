@@ -3,6 +3,7 @@ import App from "./App";
 import { CategoriesPage } from "./pages/CategoriesPage";
 import { KnownMerchantsPage } from "./pages/KnownMerchantsPage";
 import { TransactionsPage } from "./pages/TransactionsPage";
+import { ROUTE_CATEGORIES, ROUTE_MERCHANTS, ROUTE_TRANSACTIONS } from "./library";
 
 
 export const router = createBrowserRouter([
@@ -15,15 +16,15 @@ export const router = createBrowserRouter([
         element: <TransactionsPage />,
       },
       {
-        path: "transactions",
+        path: ROUTE_TRANSACTIONS,
         element: <TransactionsPage />,
       },
       {
-        path: "merchants",
+        path: `${ROUTE_MERCHANTS}/:merchantId?`,
         element: <KnownMerchantsPage />,
       },
       {
-        path: "categories",
+        path: ROUTE_CATEGORIES,
         element: <CategoriesPage />,
       },
     ],

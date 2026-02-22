@@ -15,10 +15,10 @@ interface Props {
     isMerchantsLoading: boolean;
     merchants: KnownMerchant[];
     selectedMerchant: KnownMerchant | undefined;
-    setSelectedMerchant: (value: React.SetStateAction<KnownMerchant | undefined>) => void
+    setSelectedMerchant: (value: KnownMerchant | undefined) => void
 }
 
-export const KnownMerchantsList = ({ isMerchantsLoading,merchants, selectedMerchant, setSelectedMerchant }: Props) => {
+export const KnownMerchantsList = ({ isMerchantsLoading, merchants, selectedMerchant, setSelectedMerchant }: Props) => {
     const [searchTerm, setSearchTerm] = useState('');
     const inputRef = useRef<HTMLInputElement | null>(null)
 

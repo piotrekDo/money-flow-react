@@ -11,14 +11,13 @@ interface Props {
 
 export const MenuElement = ({ menuExpanded, redirectLink, title, Icon }: Props) => {
     return (
-        <NavLink to={redirectLink} style={{ width: "100%" }}>
+        <NavLink to={`/${redirectLink}`} style={{ width: "100%" }}>
             {({ isActive }) => (
                 <HStack
                     w="100%"
                     py={1}
                     borderRadius="md"
                     cursor="pointer"
-                    // bg={isActive ? "gray.200" : "transparent"}
                     _hover={{ bg: "gray.100" }}
                     transition="background 0.2s ease"
                     color={isActive ? '#4c73f3aa' : ''}

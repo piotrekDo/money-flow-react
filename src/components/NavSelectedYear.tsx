@@ -1,9 +1,10 @@
+import type { Mode } from '@/state/useSelectedTimeState';
 import { Flex, Input } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
     selectedDate: Date;
-    setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+    setSelectedDate: (newDate: Date, newMode: Mode | null) => void
 }
 
 const bgOptions = `
@@ -32,7 +33,7 @@ export const NavSelectedYear = ({ selectedDate, setSelectedDate }: Props) => {
     const [yearInput, setYearInput] = useState<number>(selectedDate.getFullYear());
 
     const handleYearChange = () => {
-        setSelectedDate(new Date(yearInput, selectedDate.getMonth(), 1));
+        setSelectedDate(new Date(yearInput, selectedDate.getMonth(), 1), null);
     };
 
     useEffect(() => {
@@ -80,7 +81,7 @@ export const NavSelectedYear = ({ selectedDate, setSelectedDate }: Props) => {
                 transition={'opacity .25s, top .25s'}
                 onClick={e => {
                     setYearInput(y => y + 1);
-                    setSelectedDate(new Date(yearInput + 1, selectedDate.getMonth(), 1));
+                    setSelectedDate(new Date(yearInput + 1, selectedDate.getMonth(), 1), null);
                 }}
             >
                 +
@@ -103,7 +104,7 @@ export const NavSelectedYear = ({ selectedDate, setSelectedDate }: Props) => {
                 transition={'opacity .25s, top .25s'}
                 onClick={e => {
                     setYearInput(y => y - 1);
-                    setSelectedDate(new Date(yearInput - 1, selectedDate.getMonth(), 1));
+                    setSelectedDate(new Date(yearInput - 1, selectedDate.getMonth(), 1), null);
                 }}
             >
                 -

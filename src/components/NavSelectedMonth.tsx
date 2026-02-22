@@ -1,9 +1,10 @@
-import { Flex, VStack, Button } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import type { Mode } from '@/state/useSelectedTimeState';
+import { Button, Flex, VStack } from '@chakra-ui/react';
+import { useState } from 'react';
 
 interface Props {
   selectedDate: Date;
-  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
+  setSelectedDate: (newDate: Date, newMode: Mode) => void
 }
 
 const monthNames = [
@@ -57,6 +58,18 @@ export const NavSelectedMonth = ({ selectedDate, setSelectedDate }: Props) => {
         bg="#FEFCFC"
         boxShadow="md"
       >
+        <Button
+          key={-1}
+          w="100%"
+          borderRadius={0}
+          variant="ghost"
+          onClick={() => {
+            setSelectedDate(new Date(selectedDate.getFullYear(), 0, 1), 'YEAR');
+            setIsOpen(false);
+          }}
+        >
+          Cały rok
+        </Button>
         {monthNames.map((name, index) => (
           <Button
             key={index}
@@ -64,9 +77,7 @@ export const NavSelectedMonth = ({ selectedDate, setSelectedDate }: Props) => {
             borderRadius={0}
             variant="ghost"
             onClick={() => {
-              setSelectedDate(
-                date => new Date(date.getFullYear(), index, 1)
-              );
+              setSelectedDate(new Date(selectedDate.getFullYear(), index, 1), 'MONTH');
               setIsOpen(false);
             }}
           >

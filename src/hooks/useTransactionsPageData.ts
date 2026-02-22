@@ -1,5 +1,6 @@
 import { useTransactions } from '@/hooks/useTransactions';
 import type { Transaction } from '@/model/Transaction';
+import useSelectedTimeState from '@/state/useSelectedTimeState';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 
@@ -17,8 +18,7 @@ export type Totals = {
 }
 
 export const useTransactionsPageData = (initialDate: Date = new Date(2026, 0, 1)) => {
-    const queryClient = useQueryClient();
-    const [selectedDate, setSelectedDate] = useState<Date>(initialDate)
+    const { selectedDate, selectedMode, setSelectedDate } = useSelectedTimeState();
     const [selectedFilter, setSelectedFilter] = useState<string>('Wszystkie')
 
     const formatDate = (date: Date) => {
@@ -28,14 +28,21 @@ export const useTransactionsPageData = (initialDate: Date = new Date(2026, 0, 1)
         return `${year}-${month}-${day}`
     }
 
-    const from = useMemo(
-        () => new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
-        [selectedDate]
-    )
-    const to = useMemo(
-        () => new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0),
-        [selectedDate]
-    )
+    const from = useMemo(() => {
+        if (selectedMode === 'YEAR') {
+            return new Date(selectedDate.getFullYear(), 0, 1); // 1 stycznia
+        }
+        // MONTH
+        return new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1); // 1 dnia miesiąca
+    }, [selectedDate, selectedMode]);
+
+    const to = useMemo(() => {
+        if (selectedMode === 'YEAR') {
+            return new Date(selectedDate.getFullYear(), 11, 31); // 31 grudnia
+        }
+        // MONTH
+        return new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0); // ostatni dzień miesiąca
+    }, [selectedDate, selectedMode]);
 
     const { data, isLoading, isFetching, isError } = useTransactions(
         formatDate(from),

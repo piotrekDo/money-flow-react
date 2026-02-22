@@ -1,5 +1,9 @@
 import type { FetchFinancialTransactionsResponse, FetchFinancialTransactionsResponseRaw, Transaction, TransactionRaw } from "@/model/Transaction";
 
+export const mapTransactions = (raw: TransactionRaw[]): Transaction[] => {
+    return raw.map(mapTransaction)
+}
+
 export const mapTransaction = (raw: TransactionRaw): Transaction => ({
     ...raw,
     tranDate: new Date(raw.tranDate),

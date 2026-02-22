@@ -1,7 +1,24 @@
-import type { AddNewMerchant, KnownMerchant } from '@/model/KnownMerchant';
+import type { AddNewMerchant, KnownMerchant, KnownMerchantWitchTransactions, KnownMerchantWitchTransactionsRaw } from '@/model/KnownMerchant';
 import type { AxiosResponse } from 'axios';
 import ApiClient from './ApiClient';
+import { mapTransactions } from './TransactionService';
 
+export const fetchKnownMerchantByIdWithTransactions = (merchantId: number, startDate: string, endDate: string, signal?: AbortSignal): Promise<KnownMerchantWitchTransactions> => {
+  return ApiClient.get<KnownMerchantWitchTransactionsRaw>('merchants/by-id-witch-transactions', {
+    signal,
+    params: {
+      merchantId,
+      startDate,
+      endDate
+    }
+  }).then((res: AxiosResponse<KnownMerchantWitchTransactionsRaw>) => {
+    const mappedTransactions = mapTransactions(res.data.transactions)
+    return {
+      ...res.data,
+      transactions: mappedTransactions
+    }
+  })
+}
 
 export const fetchAllKnownMerchants = (signal?: AbortSignal) => {
   return ApiClient.get<KnownMerchant[]>('merchants/all', { signal })

@@ -1,4 +1,5 @@
 import type { Subcategory } from "./Category";
+import type { Transaction, TransactionRaw } from "./Transaction";
 
 export interface KnownMerchantKeyWord {
     id: number,
@@ -29,4 +30,24 @@ export interface AddNewMerchant {
     keywords: KnownMerchantKeyWord[],
     subcategories: number[],
     tranId?: number
+}
+
+export interface KnownMerchantWitchTransactionsRaw {
+    merchantId: number,
+    merchantCode: string,
+    merchantName: string,
+    imageUrl: string,
+    keywords: KnownMerchantKeyWord[],
+    subcategories: Subcategory[],
+    transactions: TransactionRaw[]
+}
+
+export interface KnownMerchantWitchTransactions {
+    merchantId: number,
+    merchantCode: string,
+    merchantName: string,
+    imageUrl: string,
+    keywords: KnownMerchantKeyWord[],
+    subcategories: Subcategory[],
+    transactions: Transaction[]
 }
