@@ -56,7 +56,7 @@ export const KnownMerchantsList = ({ isMerchantsLoading,merchants, selectedMerch
                 />
             </InputGroup>
             <VStack
-                w="300px"
+                w="250px"
                 h={'80vh'}
                 overflowY={'scroll'}
                 align="stretch"

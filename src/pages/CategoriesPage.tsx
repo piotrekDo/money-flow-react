@@ -17,12 +17,12 @@ export const CategoriesPage = () => {
                 initial={{ x: '-100px', opacity: 1 }}
                 animate={{ x: 0, opacity: 1 }}
                 style={{
-                    width: '99%',
+                    width: '100wv',
                     height: '99%',
                 }}
             >
-                <VStack minH="100vh" bg="#F5F1EE" gap={5} py={10} color={'blackAlpha.900'}>
-                    <Flex bg="gray.50" p={5} gap={5}>
+                <VStack h="100vh" bg="#F5F1EE" gap={5} py={10} color={'blackAlpha.900'} w={'100%'}>
+                    <Flex bg="gray.50" p={5} gap={5} w={'80%'} maxW={'1200px'}>
                         <SubcategoreisList selectedSub={selectedSub} setSelectedSub={setSelectedSub} />
                         <SelectedSubcategoryPanel selectedSub={selectedSub} />
                     </Flex>

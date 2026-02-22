@@ -4,7 +4,8 @@ import { useAddSubcategoryToTransaction } from "@/hooks/useAddSubcategoryToTrans
 import { useSetKnownMerchant } from "@/hooks/useSetKnownMerchant";
 import type { Subcategory } from "@/model/Category";
 import type { Transaction } from "@/model/Transaction";
-import { Flex, HStack } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
+import { useState } from "react";
 import { AiFillQuestionCircle } from "react-icons/ai";
 import { FaChevronDown } from "react-icons/fa";
 import { PossibleMerchantSelector } from "./PossibleMerchantSelector";
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export const CardBottom = ({ tran, subcategories }: Props) => {
+    const [isExpanded, setIsExpanded] = useState(false)
     const setKnownMerchant = useSetKnownMerchant();
     const addSubcategory = useAddSubcategoryToTransaction();
 
@@ -35,15 +37,32 @@ export const CardBottom = ({ tran, subcategories }: Props) => {
     }
 
     return (
-        <HStack w={'100%'} h={'20%'} justify={'space-between'}>
+        <HStack w={'100%'} h={!isExpanded ? '30px' : ''} justify={'space-between'} overflow={'hidden'} align={'start'} py={1} >
             <AiFillQuestionCircle size={25} color='#EFA444' />
-            <HStack w={'90%'} gap={1}>
+            <HStack w={'90%'} gap={1} align={'start'} >
                 {!isKnownMerchant && tran.possibleMerchants.map(pm => <PossibleMerchantSelector key={pm.id} pm={pm} onClickHandle={onClickHandle} />)}
                 {!isKnownMerchant && (!tran.possibleMerchants || tran.possibleMerchants.length == 0) && <UnknownMerchantConfirmSelector onClickHandle={onClickHandle} />}
                 {isKnownMerchant && missingCategory && tran.knownMerchant.subcategories.length > 0 && (
-                    <HStack gap={4} ml={5}>
-                        {
-                            tran.knownMerchant.subcategories.map(s => {
+                    <VStack justify={'start'} align={'start'}>
+                        <HStack gap={4} ml={5}>
+                            {
+                                tran.knownMerchant.subcategories.map(s => {
+                                    return (
+                                        <Tooltip key={s.id} content={
+                                            <>
+                                                <div>{s.name}</div>
+                                            </>
+                                        }>
+                                            <Flex cursor={'pointer'} onClick={() => onSetSubcategory(s.id)}>
+                                                <DynamicIcon name={s.icon} color={s.color} size={25} />
+                                            </Flex>
+                                        </Tooltip>
+                                    )
+                                })
+                            }
+                        </HStack>
+                        <HStack gap={4} ml={5} flexWrap={'wrap'} justify={'start'} align={'start'} >
+                            {subcategories.map(s => {
                                 return (
                                     <Tooltip key={s.id} content={
                                         <>
@@ -55,12 +74,29 @@ export const CardBottom = ({ tran, subcategories }: Props) => {
                                         </Flex>
                                     </Tooltip>
                                 )
-                            })
-                        }
+                            })}
+                        </HStack>
+                    </VStack>
+                )}
+                {isKnownMerchant && missingCategory && tran.knownMerchant.subcategories.length == 0 && (
+                    <HStack gap={4} ml={5} flexWrap={'wrap'} justify={'start'} align={'start'} >
+                        {subcategories.map(s => {
+                            return (
+                                <Tooltip key={s.id} content={
+                                    <>
+                                        <div>{s.name}</div>
+                                    </>
+                                }>
+                                    <Flex cursor={'pointer'} onClick={() => onSetSubcategory(s.id)}>
+                                        <DynamicIcon name={s.icon} color={s.color} size={25} />
+                                    </Flex>
+                                </Tooltip>
+                            )
+                        })}
                     </HStack>
                 )}
             </HStack>
-            <FaChevronDown size={20} color='#A6A8AE' cursor={'pointer'} />
+            <FaChevronDown size={20} color='#A6A8AE' cursor={'pointer'} onClick={() => setIsExpanded(s => !s)} />
         </HStack>
     )
 }

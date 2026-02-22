@@ -16,7 +16,7 @@ export type Totals = {
     totalCashOut: number;
 }
 
-export const useTransactionsPageData = (initialDate: Date = new Date(2025, 11, 1)) => {
+export const useTransactionsPageData = (initialDate: Date = new Date(2026, 0, 1)) => {
     const queryClient = useQueryClient();
     const [selectedDate, setSelectedDate] = useState<Date>(initialDate)
     const [selectedFilter, setSelectedFilter] = useState<string>('Wszystkie')

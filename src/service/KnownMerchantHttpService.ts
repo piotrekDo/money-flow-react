@@ -1,4 +1,4 @@
-import type { KnownMerchant } from '@/model/KnownMerchant';
+import type { AddNewMerchant, KnownMerchant } from '@/model/KnownMerchant';
 import type { AxiosResponse } from 'axios';
 import ApiClient from './ApiClient';
 
@@ -15,4 +15,9 @@ export const addSubcategoryToMerchant = (merchantId: number, subcategoryId: numb
       subcategoryId
     }
   }).then((res: AxiosResponse<KnownMerchant>) => res.data)
+}
+
+export const addNewKnownMerchant = (merchant: AddNewMerchant) => {
+  return ApiClient.post<KnownMerchant>('merchants/add-new', merchant)
+    .then(res => res.data)
 }

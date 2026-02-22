@@ -16,7 +16,11 @@ interface Props {
 export const SelectedSubcategoryPanel = ({ selectedSub }: Props) => {
     const { data: subcatFetched } = useSubcategoryWithMerchants(selectedSub?.id)
     return (
-        <VStack flex="1" align="stretch" gap={3} minW={'1000px'}>
+        <VStack flex="1"
+            align="stretch"
+            gap={3}
+            w="full"
+            maxW="100%">
             {selectedSub && (
                 <VStack w={'100%'}  >
                     <HStack w={'100%'} >

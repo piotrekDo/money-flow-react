@@ -25,8 +25,8 @@ export const KnownMerchantsPage = () => {
           height: '99%',
         }}
       >
-        <VStack minH="100vh" bg="#F5F1EE" gap={5} py={10} color={'blackAlpha.900'}>
-          <Flex bg="gray.50" p={5} gap={5}>
+        <VStack minH="100vh" bg="#F5F1EE" gap={5} py={10} color={'blackAlpha.900'} w={'100%'}>
+          <Flex bg="gray.50" p={5} gap={5} w={'80%'} maxW={'1200px'}>
             <KnownMerchantsList isMerchantsLoading={merchantsLoading || merchantsFetching} merchants={merchants || []} selectedMerchant={selectedMerchant} setSelectedMerchant={setSelectedMerchant} />
             <SelectedMerchantPanel selectedMerchant={selectedMerchant} subcategories={subcategories || []} />
           </Flex>

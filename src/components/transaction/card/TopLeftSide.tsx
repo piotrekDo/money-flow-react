@@ -1,9 +1,6 @@
+import { Tooltip } from "@/components/ui/tooltip";
 import type { Transaction } from '@/model/Transaction';
-import { VStack, IconButton, HStack, Box, Flex, Text, Badge, } from '@chakra-ui/react'
-import { Tooltip } from "@/components/ui/tooltip"
-import { BsFillBagPlusFill } from "react-icons/bs";
-import { CategoryMissingBadge } from '../CategoryMissingBadge';
-import { MerchantAnsureBadge } from '../MerchantAnsureBadge';
+import { Flex, Text, VStack } from '@chakra-ui/react';
 import { BadgesSection } from './BadgesSection';
 import { HeaderSection } from './HeaderSection';
 

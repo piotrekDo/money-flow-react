@@ -21,3 +21,12 @@ export interface PossibleMerchant {
     points: number;
     matchedKeywords: string[]
 }
+
+export interface AddNewMerchant {
+    merchantCode: string,
+    merchantName: string,
+    imageUrl?: string,
+    keywords: KnownMerchantKeyWord[],
+    subcategories: number[],
+    tranId?: number
+}
