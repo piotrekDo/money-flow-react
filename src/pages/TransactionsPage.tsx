@@ -10,6 +10,7 @@ import { TransactionsList } from '../components/transaction_page/TransactionsLis
 export const TransactionsPage = () => {
     const {
         selectedDate,
+        selectedMode,
         setSelectedDate,
         selectedFilter,
         setSelectedFilter,
@@ -38,6 +39,7 @@ export const TransactionsPage = () => {
                 <VStack minH="100vh" bg="#F5F1EE" gap={5} py={10}>
                     <CalendarNavigation
                         selectedDate={selectedDate}
+                        mode={selectedMode}
                         setSelectedDate={setSelectedDate}
                     />
 

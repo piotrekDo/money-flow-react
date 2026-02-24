@@ -2,15 +2,8 @@ import { useKnownMerchantById } from '@/hooks/useKnownMerchantById';
 import type { Subcategory } from '@/model/Category';
 import type { KnownMerchant } from '@/model/KnownMerchant';
 import useSelectedTimeState from '@/state/useSelectedTimeState';
-import {
-    Flex,
-    HStack,
-    Spinner,
-    Table,
-    Text,
-    VStack
-} from "@chakra-ui/react";
-import { useMemo, useState } from 'react';
+import { Flex, HStack, Spinner, Table, Text, VStack } from "@chakra-ui/react";
+import { useMemo } from 'react';
 import { CalendarNavigation } from '../CalendarNavigation';
 import { DynamicIcon } from '../DynamicIcon';
 import { MerchantCategoryModal } from './MerchantCategoryModal';
@@ -22,17 +15,23 @@ interface Props {
 }
 
 export const SelectedMerchantPanel = ({ selectedMerchant, subcategories }: Props) => {
-    const selecteAppdDate = useSelectedTimeState(s => s.selectedDate);
-    const [selectedDate, setSelectedDate] = useState<Date>(selecteAppdDate)
+    const { selectedDate, selectedMode, setSelectedDate } = useSelectedTimeState();
 
-    const from = useMemo(
-        () => new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1),
-        [selectedDate]
-    )
-    const to = useMemo(
-        () => new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0),
-        [selectedDate]
-    )
+    const from = useMemo(() => {
+        if (selectedMode === 'YEAR') {
+            return new Date(selectedDate.getFullYear(), 0, 1);
+        }
+
+        return new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+    }, [selectedDate, selectedMode]);
+
+    const to = useMemo(() => {
+        if (selectedMode === 'YEAR') {
+            return new Date(selectedDate.getFullYear(), 11, 31);
+        }
+
+        return new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+    }, [selectedDate, selectedMode]);
     const formatDate = (date: Date) => {
         const year = date.getFullYear()
         const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -97,7 +96,7 @@ export const SelectedMerchantPanel = ({ selectedMerchant, subcategories }: Props
             )}
 
             <HStack>
-                <CalendarNavigation selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+                <CalendarNavigation selectedDate={selectedDate} mode={selectedMode} setSelectedDate={setSelectedDate} />
             </HStack>
 
             <Table.ScrollArea maxW="xl">

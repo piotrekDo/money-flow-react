@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 interface Props {
   selectedDate: Date;
+  mode: Mode
   setSelectedDate: (newDate: Date, newMode: Mode) => void
 }
 
@@ -22,7 +23,7 @@ const monthNames = [
   'Grudzień',
 ];
 
-export const NavSelectedMonth = ({ selectedDate, setSelectedDate }: Props) => {
+export const NavSelectedMonth = ({ selectedDate, mode, setSelectedDate }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -40,9 +41,10 @@ export const NavSelectedMonth = ({ selectedDate, setSelectedDate }: Props) => {
       bg={isOpen ? '#FEFCFC' : 'transparent'}
       transition="background .2s ease"
     >
-      {selectedDate
+      {mode == 'MONTH' && selectedDate
         .toLocaleString('pl-PL', { month: 'long' })
         .toLocaleUpperCase('pl-PL')}
+      {mode == 'YEAR' && 'CAŁY ROK'}
 
       <VStack
         position="absolute"
