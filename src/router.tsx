@@ -1,27 +1,34 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
+import { ROUTE_CATEGORIES, ROUTE_TRANSACTIONS } from "./library";
 import { CategoriesPage } from "./pages/CategoriesPage";
+import { DashboardPage } from "./pages/DashboardPage";
 import { KnownMerchantsPage } from "./pages/KnownMerchantsPage";
 import { TransactionsPage } from "./pages/TransactionsPage";
-import { ROUTE_CATEGORIES, ROUTE_MERCHANTS, ROUTE_TRANSACTIONS } from "./library";
 
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,   // ← layout z menu
+    element: <App />,
     children: [
       {
         index: true,
-        element: <TransactionsPage />,
+        element: <DashboardPage />,
       },
       {
         path: ROUTE_TRANSACTIONS,
         element: <TransactionsPage />,
       },
       {
-        path: `${ROUTE_MERCHANTS}/:merchantId?`,
+        path: "merchants",
         element: <KnownMerchantsPage />,
+        children: [
+          {
+            path: ":merchantId",
+            element: null,
+          },
+        ],
       },
       {
         path: ROUTE_CATEGORIES,

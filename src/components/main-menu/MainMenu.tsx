@@ -6,7 +6,7 @@ import { IoMdHome } from "react-icons/io";
 import { IoStorefront } from "react-icons/io5";
 import { RiMenu2Line } from "react-icons/ri";
 import { MenuElement } from './MenuElement';
-import { ROUTE_CATEGORIES, ROUTE_MERCHANTS, ROUTE_TRANSACTIONS } from '@/library';
+import { MENU_BASE_WIDTH, ROUTE_CATEGORIES, ROUTE_MERCHANTS, ROUTE_TRANSACTIONS } from '@/library';
 
 
 const spinOnce = keyframes`
@@ -23,7 +23,7 @@ export const MainMenu = () => {
 
     return (
         <VStack
-            w={menuExpanded ? '250px' : '60px'}
+            w={menuExpanded ? '250px' : MENU_BASE_WIDTH}
             justify={'start'}
             align={'start'}
             pl={'8px'}
