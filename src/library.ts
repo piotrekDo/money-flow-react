@@ -12,6 +12,7 @@ export const QUERY_KEY_MERCHANTS = 'merchants';
 export const QUERY_KEY_CATEGORIES = 'categories';
 export const QUERY_KEY_SUBCATEGORIES = 'subcategories';
 export const QUERY_KEY_SUBCATEGORIES_WITH_MERCHANTS = 'subcategoryWithMerchants';
+export const QUERY_KEY_DASHBOARD_CATEGORIES = 'dashboardCategories'
 
 export const ROUTE_DASHBOARD = 'dashboard';
 export const ROUTE_TRANSACTIONS = 'transactions';
