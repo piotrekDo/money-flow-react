@@ -76,7 +76,7 @@ export const MainMenu = () => {
                 <MenuElement
                     menuExpanded={menuExpanded}
                     redirectLink={ROUTE_CATEGORIES}
-                    title='Kategorie'
+                    title='Podkategorie'
                     Icon={FaFolderTree}
                 />
 

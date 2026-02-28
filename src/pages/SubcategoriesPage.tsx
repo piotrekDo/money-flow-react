@@ -6,7 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from 'react';
 
-export const CategoriesPage = () => {
+export const SubcategoriesPage = () => {
     const [selectedSub, setSelectedSub] = useState<Subcategory | undefined>(undefined);
 
     return (

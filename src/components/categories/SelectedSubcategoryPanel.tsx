@@ -1,11 +1,13 @@
 import { useSubcategoryWithMerchants } from '@/hooks/useSubcategoryWithMerchants';
 import type { Subcategory } from '@/model/Category';
+import useSelectedTimeState from '@/state/useSelectedTimeState';
 import {
     Flex,
     HStack,
     Text,
     VStack
 } from "@chakra-ui/react";
+import { CalendarNavigation } from '../CalendarNavigation';
 import { DynamicIcon } from '../DynamicIcon';
 import { CategorySelectDropdown } from './CategorySelectDropdown';
 
@@ -14,6 +16,7 @@ interface Props {
 }
 
 export const SelectedSubcategoryPanel = ({ selectedSub }: Props) => {
+    const { selectedDate, selectedMode, setSelectedDate } = useSelectedTimeState();
     const { data: subcatFetched } = useSubcategoryWithMerchants(selectedSub?.id)
     return (
         <VStack flex="1"
@@ -31,11 +34,15 @@ export const SelectedSubcategoryPanel = ({ selectedSub }: Props) => {
                             <Text fontWeight={'600'} fontSize={'3xl'}>{selectedSub.name}</Text>
                             <CategorySelectDropdown selectedSub={selectedSub} />
                         </VStack>
-
                     </HStack>
+
+                    <HStack>
+                        <CalendarNavigation selectedDate={selectedDate} mode={selectedMode} setSelectedDate={setSelectedDate} />
+                    </HStack>
+
                     <HStack w={'100%'} mt={10} flexWrap={'wrap'} >
                         {subcatFetched && subcatFetched.merchants.map(m => (
-                            <Flex key={m.merchantId} border={'solid 1px'} px={3} py={2} borderRadius={'20px'}>
+                            <Flex key={m.merchantId} border={'solid 1px'} px={2} py={1} borderRadius={'20px'} fontSize={'xs'}>
                                 <Flex>
                                     <img
                                         src={`/merchant_icons/${m.merchantCode || 'UNKNOWN'}.png`}

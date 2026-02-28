@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import { ROUTE_CATEGORIES, ROUTE_TRANSACTIONS } from "./library";
-import { CategoriesPage } from "./pages/CategoriesPage";
+import { SubcategoriesPage } from "./pages/SubcategoriesPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { KnownMerchantsPage } from "./pages/KnownMerchantsPage";
 import { TransactionsPage } from "./pages/TransactionsPage";
@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
       },
       {
         path: ROUTE_CATEGORIES,
-        element: <CategoriesPage />,
+        element: <SubcategoriesPage />,
       },
     ],
   },

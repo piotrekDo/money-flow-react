@@ -2,7 +2,7 @@ import { useKnownMerchantById } from '@/hooks/useKnownMerchantById';
 import type { Subcategory } from '@/model/Category';
 import type { KnownMerchant } from '@/model/KnownMerchant';
 import useSelectedTimeState from '@/state/useSelectedTimeState';
-import { Flex, HStack, Spinner, Table, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, Spinner, Table, Text, VStack } from "@chakra-ui/react";
 import { useMemo } from 'react';
 import { CalendarNavigation } from '../CalendarNavigation';
 import { DynamicIcon } from '../DynamicIcon';
@@ -95,59 +95,69 @@ export const SelectedMerchantPanel = ({ selectedMerchant, subcategories }: Props
                 </VStack>
             )}
 
-            <HStack>
+            <HStack mt={5} mb={10}>
                 <CalendarNavigation selectedDate={selectedDate} mode={selectedMode} setSelectedDate={setSelectedDate} />
             </HStack>
-
-            <Table.ScrollArea maxW="xl">
-                <Table.Root size={'sm'} variant={'line'} interactive>
-                    {/* <Table.Caption>Lista transakcji</Table.Caption> */}
-
-                    <Table.Header >
-                        <Table.Row>
-                            <Table.ColumnHeader >Data</Table.ColumnHeader>
-                            <Table.ColumnHeader >Kwota</Table.ColumnHeader>
-                            <Table.ColumnHeader >Komentarz</Table.ColumnHeader>
-                            <Table.ColumnHeader >Kategoria</Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body color={'whiteAlpha.700'}>
-                        {isFetched && fetchedMerchant?.transactions.map((t) => (
-                            <Table.Row key={t.systemId}>
-                                <Table.Cell>{t.tranDate.toLocaleDateString()}</Table.Cell>
-                                <Table.Cell>{t.amount.toFixed(2)}</Table.Cell>
-                                <Table.Cell>{t.comment}</Table.Cell>
-                                <Table.Cell>
-                                    <Flex
-                                        key={t?.subcategoryDto?.id}
-                                        w={'fit-content'}
-                                        justify={'center'}
-                                        align={'center'}
-                                        spaceX={2}
-                                        borderRadius={'10px'}
-                                        px={2}
-                                    >
-                                        <DynamicIcon name={t?.subcategoryDto?.icon} color={t?.subcategoryDto?.color} />
-                                        <Text>{t?.subcategoryDto?.name}</Text>
-                                    </Flex>
-                                </Table.Cell>
+            <Table.ScrollArea maxW="650px">
+                <Box maxH="500px" overflowY="auto">
+                    <Table.Root size="sm" variant="line" interactive>
+                        <Table.Header position="sticky" top={0} bg="gray.800" zIndex={1}>
+                            <Table.Row>
+                                <Table.ColumnHeader>Data</Table.ColumnHeader>
+                                <Table.ColumnHeader>Kwota</Table.ColumnHeader>
+                                <Table.ColumnHeader>Komentarz</Table.ColumnHeader>
+                                <Table.ColumnHeader>Kategoria</Table.ColumnHeader>
                             </Table.Row>
-                        ))}
-                    </Table.Body>
-                    <Table.Footer color={'whiteAlpha.900'}>
-                        <Table.Row>
-                            <Table.Cell>Razem:</Table.Cell>
-                            <Table.Cell>
-                                {isFetched && fetchedMerchant?.transactions
-                                    .reduce((sum, t) => sum + t.amount, 0)
-                                    .toFixed(2)}
-                            </Table.Cell>
-                            <Table.Cell></Table.Cell>
-                            <Table.Cell></Table.Cell>
-                        </Table.Row>
-                    </Table.Footer>
-                </Table.Root>
+                        </Table.Header>
+
+                        <Table.Body color="whiteAlpha.700">
+                            {isFetched &&
+                                fetchedMerchant?.transactions.map((t) => (
+                                    <Table.Row key={t.systemId}>
+                                        <Table.Cell>{t.tranDate.toLocaleDateString()}</Table.Cell>
+                                        <Table.Cell>{t.amount.toFixed(2)}</Table.Cell>
+                                        <Table.Cell>{t.comment}</Table.Cell>
+                                        <Table.Cell>
+                                            <Flex
+                                                w="fit-content"
+                                                justify="center"
+                                                align="center"
+                                                gap={2}
+                                                borderRadius="10px"
+                                                px={2}
+                                            >
+                                                <DynamicIcon
+                                                    name={t?.subcategoryDto?.icon}
+                                                    color={t?.subcategoryDto?.color}
+                                                />
+                                                <Text>{t?.subcategoryDto?.name}</Text>
+                                            </Flex>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ))}
+                        </Table.Body>
+
+                        <Table.Footer
+                            color={'whiteAlpha.800'}
+                            position="sticky"
+                            bottom={0}
+                            bg="gray.900"
+                            zIndex={2}
+                        >
+                            <Table.Row>
+                                <Table.Cell>Razem:</Table.Cell>
+                                <Table.Cell>
+                                    {isFetched &&
+                                        fetchedMerchant?.transactions
+                                            .reduce((sum, t) => sum + t.amount, 0)
+                                            .toFixed(2)}
+                                </Table.Cell>
+                                <Table.Cell />
+                                <Table.Cell />
+                            </Table.Row>
+                        </Table.Footer>
+                    </Table.Root>
+                </Box>
             </Table.ScrollArea>
         </VStack>
     )
